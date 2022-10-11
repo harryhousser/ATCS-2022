@@ -1,0 +1,10 @@
+img{
+    position: fixed;
+    display:flex;
+    width: 55%;
+    height: 80%;
+    border-radius: 45%;
+}
+.whole{
+    justify-content: end;
+}
