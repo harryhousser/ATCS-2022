@@ -1,29 +1,36 @@
 img{
-    
-    margin:auto;
+    margin: 20px;
     width: 55%;
     height: 80%;
-    border-radius: 35%;
-    border: 2px solid yellow;
+    border: 4px dashed darkblue;
+    float: left;
 }
-.whole{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-}
+
 body{
-    background-color: lightblue;
+    background-color: beige;
 }
     
-li{
-    text-align: center;
-    display: inline;
-    font-size: large;
+h1{
+    justify-content: center;
+    display: flex;
     font-family: 'Courier New', Courier, monospace;
+    color: darkblue;
 }
 
 p{
+    margin-top: 120px;
     font-size:x-large;
     font-style: italic;
+    margin-bottom: 90px;
+    color:lightblue;
+    -webkit-text-stroke-width: 0.4px;
+    -webkit-text-stroke-color: black;
 }
+
+li{
+    display: inline-block;
+    margin-inline: 5px;
+    font-size: large;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
