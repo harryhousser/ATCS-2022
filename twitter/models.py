@@ -37,12 +37,18 @@ class Follower(Base):
 
 class Tweet(Base):
     # TODO: Complete the class
-    pass
+    id = Column("id", INTEGER, primary_key=True)
+    content = Column('content', TEXT)
+    timestamp = Column('timestamp', TEXT)
+    username = Column('username', TEXT, ForeignKey('users.username'))
+    
 
 class Tag(Base):
     # TODO: Complete the class
-    pass
+    def __repr__(self):
+        return "#" + self.tag
 
 class TweetTag(Base):
     # TODO: Complete the class
+    
     pass
