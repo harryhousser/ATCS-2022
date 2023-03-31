@@ -1,4 +1,4 @@
-img{
+.bd-example{
     margin: 20px;
     width: 55%;
     height: 80%;
@@ -17,6 +17,13 @@ h1{
     color: darkblue;
 }
 
+.label{
+    color:red;
+    justify-content: center;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
 p{
     margin-top: 120px;
     font-size:x-large;
@@ -33,4 +40,6 @@ li{
     font-size: large;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
-
+.navbar{
+    background-color: azure;
+}
