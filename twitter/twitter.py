@@ -67,7 +67,7 @@ class Twitter:
     def login(self):
         username = input("Enter username: ")
         input_password = input("Password: ")
-        user = db_session.query(User).filter_by(User.username == username, User.password == input_password.first())
+        user = db_session.query(User).where((User.username == username) & (User.password == input_password)).first()
         while user == None:
             print("Invalid username or password")
             username = input("Enter username: ")
@@ -78,13 +78,15 @@ class Twitter:
     
     def logout(self):
         
-        pass
+        self.current_user = None
+        self.end
 
     """
     Allows the user to login,  
     register, or exit.
     """
     def startup(self):
+        
         pass
 
     def follow(self):
