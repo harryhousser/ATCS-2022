@@ -1,5 +1,5 @@
 """
-Our main application logic
+Our main applicati1on logic
 """
 
 from twitter import * 

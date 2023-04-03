@@ -55,7 +55,9 @@ class Twitter:
             else:
                 break
                 
-
+        user = User(password = password, username = username)
+        db_session.add(user)
+        db_session.commit()
             
         
 
@@ -119,8 +121,7 @@ class Twitter:
             db_session.commit()
             print("You are no longer following @" + unfollow)
 
-    def __init__(self):
-        self.current_user = None
+    
     
     def tweet(self):
         if self.current_user is None:
@@ -136,11 +137,11 @@ class Twitter:
         tags = tags.split()
         for i in tags:
             if db_session.query(Tag).where(Tag.content == i).first() == None:
-                tag = Tag(i)
+                tag = Tag(content=i)
                 db_session.add(tag)
                 db_session.commit()
             else:
-                db_session.query(Tag).where(Tag.content == i).first()
+                tag = db_session.query(Tag).where(Tag.content == i).first()
                 tweetTag = TweetTag(tag_id = tag.id, tweet_id = tweetID)
                 db_session.add(tweetTag)
                 db_session.commit()
