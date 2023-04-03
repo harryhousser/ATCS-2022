@@ -96,10 +96,29 @@ class Twitter:
         pass
 
     def tweet(self):
-        pass
+        tweetContent = input("Create Tweet: ")
+        tags = input("Enter your tags seperated by spaces: ")
+        newTweet = Tweet(content = tweetContent, username = self.current_user.username, timestamp = datetime.now())
+        db_session.add(newTweet)
+        db_session.commit()
+        tweet = db_session.query(Tweet).where(Tweet.content == tweetContent).first()
+        tweetID = tweet.id
+        tags = tags.split()
+        for i in tags:
+            if db_session.query(Tag).where(Tag.content == i).first() == None:
+                tag = Tag(i)
+                db_session.add(tag)
+                db_session.commit()
+            else:
+                db_session.query(Tag).where(Tag.content == i).first()
+                tweetTag = TweetTag(tag_id = tag.id, tweet_id = tweetID)
+                db_session.add(tweetTag)
+                db_session.commit()
+        
     
     def view_my_tweets(self):
-        pass
+        tweets = db_session.query(Tweet).where(Tweet.username == self.current_user.username)
+        self.print_tweets(tweets)
     
     """
     Prints the 5 most recent tweets of the 
