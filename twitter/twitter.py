@@ -86,18 +86,48 @@ class Twitter:
     register, or exit.
     """
     def startup(self):
+        print("Welcome to ATCS Twitter\nPlease select a menu option:")
+        option = int(input("1.Login \n2. Register User \n3. Exit\n" ))
+        if option == 1:
+            self.login()
+        elif option == 2:
+            self.register_user()
+        elif option == 3:
+            self.end()
         
-        pass
 
     def follow(self):
-        pass
+        follow = input("Who would you like to follow? ")
+        user = db_session.query(User).where(User.username == follow).first()
+        check = db_session.query(Follower).where((Follower.follower_id == self.current_user.username) and (Follower.following_id == user.id)).first()
+        if(check == None):
+            follower = Follower(follower_id = self.current_user.username, following_id = user.username)
+            db_session.add(follower)
+            db_session.commit()
+            print("You are now following @" + user.username)
+        else:
+            print("You already follow @" + user.username)
+
 
     def unfollow(self):
-        pass
+        unfollow = input("Who would you like to unfollow? ")
+        user = db_session.query(Follower).where((Follower.follower_id == self.current_user.username) and (Follower.following_id == unfollow)).first()
+        if(user == None):
+            print("You don't follow " + user.username)
+        else:
+            db_session.delete(user)
+            db_session.commit()
+            print("You are no longer following @" + unfollow)
 
+    def __init__(self):
+        self.current_user = None
+    
     def tweet(self):
+        if self.current_user is None:
+            print("You must be logged in to create a tweet.")
+            return
         tweetContent = input("Create Tweet: ")
-        tags = input("Enter your tags seperated by spaces: ")
+        tags = input("Enter your tags separated by spaces: ")
         newTweet = Tweet(content = tweetContent, username = self.current_user.username, timestamp = datetime.now())
         db_session.add(newTweet)
         db_session.commit()
@@ -115,6 +145,8 @@ class Twitter:
                 db_session.add(tweetTag)
                 db_session.commit()
         
+
+        
     
     def view_my_tweets(self):
         tweets = db_session.query(Tweet).where(Tweet.username == self.current_user.username)
@@ -125,13 +157,33 @@ class Twitter:
     people the user follows
     """
     def view_feed(self):
-        pass
+        tweets = []
+        for following in self.current_user.following:
+            user_tweets = db_session.query(Tweet).where(Tweet.username == following.username).order_by(Tweet.timestamp.desc()).limit(5)
+            tweets.extend(user_tweets)
+        tweets.sort(reverse=True, key=lambda tweet: tweet.timestamp)
+        self.print_tweets(tweets)
+
 
     def search_by_user(self):
-        pass
+        username = input("Enter username to search for: ")
+        user = db_session.query(User).where(User.username == username).first()
+        if user == None:
+            print("There is no user by that name")
+        else:
+            user_tweets = db_session.query(Tweet).where(Tweet.username == username).all()
+            self.print_tweets(user_tweets)
+
 
     def search_by_tag(self):
-        pass
+        tag = input("Enter tag to search for: ")
+        tag = db_session.query(Tag).filter(Tag.content == tag).first()
+        if tag != None:
+            tweets_with_tag = db_session.query(Tweet).join(TweetTag).filter(TweetTag.tag_id == tag.id).all()    
+            self.print_tweets(tweets_with_tag)
+        else:
+            print("There is no tag by that name")
+
 
     """
     Allows the user to select from the 
